@@ -1,8 +1,9 @@
 import React, { Component} from 'react';
 // import Radium, { StyleRoot } from 'radium';
-import './App.css';
+import classes from './App.module.css';
 // Use uppercase for custom components
-import Person from './Person/Person';
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 
 // function App() {
@@ -75,17 +76,18 @@ class App extends Component {
   // Only two things lead React to update the DOM: changing state and props
 
   render() {
-    const style = {
-      backgroundColor: 'green', // or 'background-color' : 'white'
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid orange',
-      padding: '8px',
+    // Style the button
+    // const style = {
+    //   backgroundColor: 'green', // or 'background-color' : 'white'
+    //   color: 'white',
+    //   font: 'inherit',
+    //   border: '1px solid orange',
+    //   padding: '8px',
       // ':hover': {
       //   backgroundColor: 'lightgreen',
       //   color:'black'
       // }
-    }
+    // }
 
     let persons = null;
 
@@ -108,56 +110,53 @@ class App extends Component {
     // }
     
     if (this.state.showPersons) {
-      persons = (
-        <div>
-          {this.state.persons.map((person, index) => {
+      persons =<Persons 
+            persons={this.state.persons}
+            deleted={this.deletePersonHandler}
+            changed={this.nameChangedHandler}/>
+          /* {this.state.persons.map((person, index) => {
             return <Person
               click={() => this.deletePersonHandler(index)}
               name={person.name}
               age={person.age}
               key={person.id} 
               changed={(event) => this.nameChangedHandler(event, person.id)}/>
-          })}
-        </div>
-      );
-
-      style.backgroundColor = 'red';
-      style[':hover'] = {
-        backgroundColor: 'salmon',
-        color: 'black'
-      }
+          })} */
+  
+      // style.backgroundColor = 'red';
+      // style[':hover'] = {
+      //   backgroundColor: 'salmon',
+      //   color: 'black'
+      // }
     }
 
-    const classes  = [];
-
-    if (this.state.persons.length <= 2) {
-      classes.push('red');
-    }
-
-    if (this.state.persons.length <= 1) {
-      classes.push('bold');
-    }
 
     // JSX code. Note that class in HTML is turned into className
     // We are not actually using HTML tags. React is converting them behind the scenes
     // We can only have one root element. Best practice to do this
     return (
       // <StyleRoot> // only wrap with StyleRoot for media queries (transforming selectors)
-        <div className="App">
-          <h1>Hello, world!!</h1>
-          <p className={classes.join(' ')}>This is really working!</p>
+        <div className={classes.App}>
+          <Cockpit 
+            persons={this.state.persons}
+            showPersons={this.state.showPersons}
+            clicked={this.togglePersonsHandler} />
+          {persons}
+
+          {/* <h1>Hello, world!!</h1>
+          <p className={assignedClasses.join(' ')}>This is really working!</p> */}
           {/* This onClick handler syntax for passing arguments is more efficient than the ()=> depending on size of application*/}
-          <button 
-            style={style}
-            // onClick={this.switchNameHandler.bind(this, 'Vanessa')}>
+          {/* <button 
+            className={btnClass} */}
+            {/* // onClick={this.switchNameHandler.bind(this, 'Vanessa')}>
             onClick={this.togglePersonsHandler}>
-            Switch Name
-          </button>
+            Switch Name */}
+          {/* </button> */}
           {/*{} inside JSX means you can render Javascript functions, properties (variables), and also conditional statements*/}
           {/* Can only use ternary/simple logic, not block statements (i.e. if/else) */}
           {/* this.state.showPersons ? <div></div> : null */}
           {/* Referencing the persons variable below, does the same thing as the tenary expression above */}
-          {persons}
+          
         </div>
       // </StyleRoot>
     );
